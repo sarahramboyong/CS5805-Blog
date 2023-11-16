@@ -16,9 +16,16 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Sarah Ramboyong",
     "section": "",
-    "text": "This is a test!"
+    "text": "Hello and welcome to my blog!\nFinley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.\n\n\nVirginia Tech | Blacksburg, VA MEng in Computer Science | Aug 2022 - May 2024\nVirginia Tech | Blacksburg, VA B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "Sarah Ramboyong",
+    "section": "",
+    "text": "Virginia Tech | Blacksburg, VA MEng in Computer Science | Aug 2022 - May 2024\nVirginia Tech | Blacksburg, VA B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023"
   },
   {
     "objectID": "posts/post-with-code/index.html",

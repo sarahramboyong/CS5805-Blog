@@ -1,8 +1,9 @@
 ---
-title: "About"
+title: "Sarah Ramboyong"
 image: SarahRambo_profile.jpg
 about:
   template: jolla
+  image-shape: rounded
   links:
     - icon: linkedin
       text: LinkedIn
@@ -13,4 +14,20 @@ about:
 
 ---
 
-This is a test!
+
+:::{#hero-heading}
+
+Hello and welcome to my blog! 
+
+Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.
+
+## Education
+
+Virginia Tech | Blacksburg, VA
+MEng in Computer Science | Aug 2022 - May 2024
+
+Virginia Tech | Blacksburg, VA
+B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023
+
+
+:::

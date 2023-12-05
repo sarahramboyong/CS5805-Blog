@@ -2,8 +2,42 @@
 title: "Clustering"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
-categories: [news, code, analysis]
-image: "image.jpg"
+image: "clustering_image.png"
+jupyter: python3
 ---
+# Introduction 
 
-This is a post with executable code will be about clusting, probably knn
+Clustering a is an unsupervised machine learning technique that groups data points into a specified number of groups. This grouping is based on shared characteristics, so points in the same cluster are similar to one another and dissimilar to points in other clusters.
+
+There are many appliciations of clustering, for example:
+
+* Biology - identifying shared characteristics across different species
+* Marketing - understanding consumer behavior
+* Cybersecurity - visualizing network traffic and patterns for improved anomaly detection
+* Image segmentation - object recognition and isolation
+
+In this blog post we will be implementing two clustering algorithms, K-Means and K-Nearest Neighbors (KNN).
+
+# K-Means
+
+K-Means is a clustering algorithm that
+
+
+```{python}
+import numpy as np
+a = np.arange(15).reshape(3, 5)
+a
+```
+
+we will walk through the implimentation of KNN clustering...
+
+
+
+# KNN
+
+
+
+## References:
+* https://www.geeksforgeeks.org/clustering-in-machine-learning/
+* https://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms
+* 

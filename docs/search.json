@@ -25,7 +25,7 @@
     "href": "about.html",
     "title": "Sarah Ramboyong",
     "section": "",
-    "text": "Hello and welcome to my blog!\nFinley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.\n\n\nVirginia Tech | Blacksburg, VA MEng in Computer Science | Aug 2022 - May 2024\nVirginia Tech | Blacksburg, VA B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023"
+    "text": "Hello and welcome to my blog!\nSarah is a Masters of Engineering student at Virginia Tech studying Computer Science, with a concentration in Data Analytics and AI. When not studying, Sarah enjoys hiking, traveling, and spending time with her friends and family.\n\n\nVirginia Tech | Blacksburg, VA MEng in Computer Science | Aug 2022 - May 2024\nVirginia Tech | Blacksburg, VA B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023\n\n\n\nThis blog was created as an assignment for Virginia Tech’s CS 5805: Machine Learning. Sarah would like to express her gratitude to the teaching staff of this course, and especially to Dr. Martin Skarzynski for a great semester."
   },
   {
     "objectID": "about.html#education",
@@ -39,14 +39,14 @@
     "href": "index.html",
     "title": "CS5805: Machine Learning Blog",
     "section": "",
-    "text": "Probability Theory & Random Variables\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nLinear & Non-linear Regression\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nAnomaly & Outlier Detection\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\nNo matching items"
+    "text": "Probability Theory & Random Variables\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nLinear & Non-linear Regression\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nAnomaly & Outlier Detection\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2-clustering/index.html",
     "href": "posts/2-clustering/index.html",
     "title": "Clustering",
     "section": "",
-    "text": "This is a post with executable code will be about clusting, probably knn"
+    "text": "Clustering a is an unsupervised machine learning technique that groups data points into a specified number of groups. This grouping is based on shared characteristics, so points in the same cluster are similar to one another and dissimilar to points in other clusters.\nThere are many appliciations of clustering, for example:\n\nBiology - identifying shared characteristics across different species\nMarketing - understanding consumer behavior\nCybersecurity - visualizing network traffic and patterns for improved anomaly detection\nImage segmentation - object recognition and isolation\n\nIn this blog post we will be implementing two clustering algorithms, K-Means and K-Nearest Neighbors (KNN)."
   },
   {
     "objectID": "posts/4-classification/index.html",
@@ -54,5 +54,19 @@
     "title": "Clustering",
     "section": "",
     "text": "This is a post with executable code will be about clusting, probably knn"
+  },
+  {
+    "objectID": "posts/2-clustering/index.html#references",
+    "href": "posts/2-clustering/index.html#references",
+    "title": "Clustering",
+    "section": "References:",
+    "text": "References:\n\nhttps://www.geeksforgeeks.org/clustering-in-machine-learning/\nhttps://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms"
+  },
+  {
+    "objectID": "about.html#acknowledgement",
+    "href": "about.html#acknowledgement",
+    "title": "Sarah Ramboyong",
+    "section": "",
+    "text": "This blog was created as an assignment for Virginia Tech’s CS 5805: Machine Learning. Sarah would like to express her gratitude to the teaching staff of this course, and especially to Dr. Martin Skarzynski for a great semester."
   }
 ]

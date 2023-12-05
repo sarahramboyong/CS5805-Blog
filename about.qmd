@@ -11,6 +11,9 @@ about:
     - icon: github
       text: Github
       href: https://github.com/sarahramboyong
+    - icon: github
+      text: Github
+      href: https://git.cs.vt.edu/sarahrambo
 
 ---
 
@@ -19,7 +22,7 @@ about:
 
 Hello and welcome to my blog! 
 
-Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.
+Sarah is a Masters of Engineering student at Virginia Tech studying Computer Science, with a concentration in Data Analytics and AI. When not studying, Sarah enjoys hiking, traveling, and spending time with her friends and family.
 
 ## Education
 
@@ -29,5 +32,8 @@ MEng in Computer Science | Aug 2022 - May 2024
 Virginia Tech | Blacksburg, VA
 B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023
 
+## Acknowledgement
+
+This blog was created as an assignment for Virginia Tech's CS 5805: Machine Learning. Sarah would like to express her gratitude to the teaching staff of this course, and especially to Dr. Martin Skarzynski for a great semester.
 
 :::

@@ -3,14 +3,22 @@ project:
   output-dir: docs
 
 website:
-  title: "CS5805"
+  title: "Posts"
   navbar:
     right:
       - about.qmd
+      - icon: linkedin
+        text: LinkedIn
+        href: https://www.linkedin.com/in/sarahramboyong/
       - icon: github
-        href: https://github.com/
+        text: Github
+        href: https://github.com/sarahramboyong
       - icon: github
-        href: https://github.com/
+        text: Github
+        href: https://git.cs.vt.edu/sarahrambo
+
+
+
 format:
   html:
     theme: yeti

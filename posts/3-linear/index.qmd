@@ -2,7 +2,6 @@
 title: "Linear & Non-linear Regression"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
-categories: [news, code, analysis]
 image: "image.jpg"
 ---
 

@@ -1,0 +1,11 @@
+{
+  "hash": "e8f708a7a88889352ad2de14fd7e70bc",
+  "result": {
+    "markdown": "---\ntitle: Clustering\nauthor: Sarah Ramboyong\ndate: 2023-12-6\nimage: clustering_image.png\n---\n\n# Introduction \n\nClustering a is an unsupervised machine learning technique that groups data points into a specified number of groups. This grouping is based on shared characteristics, so points in the same cluster are similar to one another and dissimilar to points in other clusters.\n\nThere are many appliciations of clustering, for example:\n\n* Biology - identifying shared characteristics across different species\n* Marketing - understanding consumer behavior\n* Cybersecurity - visualizing network traffic and patterns for improved anomaly detection\n* Image segmentation - object recognition and isolation\n\nIn this blog post we will be implementing two clustering algorithms, K-Means and K-Nearest Neighbors (KNN).\n\n# K-Means\n\nK-Means is a clustering algorithm that\n\n::: {.cell execution_count=1}\n``` {.python .cell-code}\nimport numpy as np\na = np.arange(15).reshape(3, 5)\na\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n```\narray([[ 0,  1,  2,  3,  4],\n       [ 5,  6,  7,  8,  9],\n       [10, 11, 12, 13, 14]])\n```\n:::\n:::\n\n\nwe will walk through the implimentation of KNN clustering...\n\n\n\n# KNN\n\n\n\n## References:\n* https://www.geeksforgeeks.org/clustering-in-machine-learning/\n* https://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms\n* \n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

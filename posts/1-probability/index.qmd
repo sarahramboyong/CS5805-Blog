@@ -2,7 +2,7 @@
 title: "Probability Theory & Random Variables"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
-categories: [news]
+image: "probability_image.png"
 ---
 
 This blog will be all about probability theory & random variables.... maybe histograms?

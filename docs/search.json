@@ -1,17 +1,24 @@
 [
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
+    "objectID": "posts/5-anomaly/index.html",
+    "href": "posts/5-anomaly/index.html",
+    "title": "Anomaly & Outlier Detection",
+    "section": "",
+    "text": "This is a post with executable code will be about anomaly detection"
+  },
+  {
+    "objectID": "posts/3-linear/index.html",
+    "href": "posts/3-linear/index.html",
+    "title": "Linear & Non-linear Regression",
+    "section": "",
+    "text": "This is a post with executable code will be about linear / nonlinear regression"
+  },
+  {
+    "objectID": "posts/1-probability/index.html",
+    "href": "posts/1-probability/index.html",
     "title": "Probability Theory & Random Variables",
     "section": "",
     "text": "This blog will be all about probability theory & random variables…. maybe histograms?\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CS5805: Machine Learning Blog",
-    "section": "",
-    "text": "Clustering\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nProbability Theory & Random Variables\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -28,8 +35,22 @@
     "text": "Virginia Tech | Blacksburg, VA MEng in Computer Science | Aug 2022 - May 2024\nVirginia Tech | Blacksburg, VA B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023"
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CS5805: Machine Learning Blog",
+    "section": "",
+    "text": "Probability Theory & Random Variables\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nLinear & Non-linear Regression\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nAnomaly & Outlier Detection\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2-clustering/index.html",
+    "href": "posts/2-clustering/index.html",
+    "title": "Clustering",
+    "section": "",
+    "text": "This is a post with executable code will be about clusting, probably knn"
+  },
+  {
+    "objectID": "posts/4-classification/index.html",
+    "href": "posts/4-classification/index.html",
     "title": "Clustering",
     "section": "",
     "text": "This is a post with executable code will be about clusting, probably knn"

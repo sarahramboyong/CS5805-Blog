@@ -35,6 +35,13 @@
     "text": "Virginia Tech | Blacksburg, VA MEng in Computer Science | Aug 2022 - May 2024\nVirginia Tech | Blacksburg, VA B.s in Computational Modeling & Data Analytics | Aug 2020 - May 2023"
   },
   {
+    "objectID": "about.html#acknowledgement",
+    "href": "about.html#acknowledgement",
+    "title": "Sarah Ramboyong",
+    "section": "",
+    "text": "This blog was created as an assignment for Virginia Tech’s CS 5805: Machine Learning. Sarah would like to express her gratitude to the teaching staff of this course, and especially to Dr. Martin Skarzynski for a great semester."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "CS5805: Machine Learning Blog",
@@ -46,7 +53,14 @@
     "href": "posts/2-clustering/index.html",
     "title": "Clustering",
     "section": "",
-    "text": "Clustering a is an unsupervised machine learning technique that groups data points into a specified number of groups. This grouping is based on shared characteristics, so points in the same cluster are similar to one another and dissimilar to points in other clusters.\nThere are many appliciations of clustering, for example:\n\nBiology - identifying shared characteristics across different species\nMarketing - understanding consumer behavior\nCybersecurity - visualizing network traffic and patterns for improved anomaly detection\nImage segmentation - object recognition and isolation\n\nIn this blog post we will be implementing two clustering algorithms, K-Means and K-Nearest Neighbors (KNN)."
+    "text": "Clustering a is an unsupervised machine learning technique that groups data points into a specified number of groups. This grouping is based on shared characteristics, so points in the same cluster are similar to one another and dissimilar to points in other clusters.\nThere are many appliciations of clustering, for example:\n\nBiology - identifying shared characteristics across different species\nMarketing - understanding consumer behavior\nCybersecurity - visualizing network traffic and patterns for improved anomaly detection\nImage segmentation - object recognition and isolation\n\nIn this blog post we will be implementing the K-Means clustering algorithm. We will be using the palmer penguin dataset which includes size measurements, clutch observations, and blood isotope ratios for 344 adult penguins observed on islands surrounding Palmer Station, Antarctica. This dataset is publically avaliable on GitHub.\n\n# Load the Palmer Penguins dataset\nimport pandas as pd\nfrom palmerpenguins import load_penguins\npenguins = load_penguins()\npenguins.dropna(inplace=True)  # drop nan values\nX = penguins.iloc[:, 2:6]\ny = pd.factorize(penguins[\"species\"])[0]"
+  },
+  {
+    "objectID": "posts/2-clustering/index.html#references",
+    "href": "posts/2-clustering/index.html#references",
+    "title": "Clustering",
+    "section": "References:",
+    "text": "References:\n\nhttps://www.geeksforgeeks.org/clustering-in-machine-learning/\nhttps://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms\nhttps://github.com/mcnakhaee/palmerpenguins\nhttps://www.w3schools.com/python/python_ml_k-means.asp"
   },
   {
     "objectID": "posts/4-classification/index.html",
@@ -54,19 +68,5 @@
     "title": "Clustering",
     "section": "",
     "text": "This is a post with executable code will be about clusting, probably knn"
-  },
-  {
-    "objectID": "posts/2-clustering/index.html#references",
-    "href": "posts/2-clustering/index.html#references",
-    "title": "Clustering",
-    "section": "References:",
-    "text": "References:\n\nhttps://www.geeksforgeeks.org/clustering-in-machine-learning/\nhttps://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms"
-  },
-  {
-    "objectID": "about.html#acknowledgement",
-    "href": "about.html#acknowledgement",
-    "title": "Sarah Ramboyong",
-    "section": "",
-    "text": "This blog was created as an assignment for Virginia Tech’s CS 5805: Machine Learning. Sarah would like to express her gratitude to the teaching staff of this course, and especially to Dr. Martin Skarzynski for a great semester."
   }
 ]

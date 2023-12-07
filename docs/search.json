@@ -4,7 +4,14 @@
     "href": "posts/5-anomaly/index.html",
     "title": "Anomaly & Outlier Detection",
     "section": "",
-    "text": "This is a post with executable code will be about anomaly detection"
+    "text": "Anomaly detection is the process of identifying suspicious or unusual occurrences within the dataset. These points are also called outliers and the can effect the performance of machine learning algorithms and skew results. In this blog we will implement one method of anomaly detection, Density-Based Spatial Clustering of Applications with Noise (DBSCAN). We will be using the Iris dataset from sklearn. This dataset contains 150 samples from 3 classes, 50 instances each. It contains the length and width of both sepals and petals.\nThis dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html)\n\nfrom sklearn.datasets import load_iris\n\n# Load the iris dataset\niris = load_iris()\n\n# The data, target, and feature names are stored in the data, target, and feature_names attributes, respectively\nX = iris.data\ny = iris.target\nfeature_names = iris.feature_names"
+  },
+  {
+    "objectID": "posts/5-anomaly/index.html#references",
+    "href": "posts/5-anomaly/index.html#references",
+    "title": "Anomaly & Outlier Detection",
+    "section": "References:",
+    "text": "References:\n\nhttps://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html\nhttps://pieriantraining.com/dbscan-for-outlier-detection-in-python-and-scikit-learn-machine-learning-in-python/\nhttps://www.geeksforgeeks.org/detect-and-remove-the-outliers-using-python/\nhttps://www.kdnuggets.com/2020/04/dbscan-clustering-algorithm-machine-learning.html#:~:text=low%20point%20density.-,Density%2DBased%20Spatial%20Clustering%20of%20Applications%20with%20Noise%20(DBSCAN),is%20containing%20noise%20and%20outliers."
   },
   {
     "objectID": "posts/3-linear/index.html",
@@ -25,7 +32,7 @@
     "href": "posts/1-probability/index.html",
     "title": "Probability Theory & Random Variables",
     "section": "",
-    "text": "This blog will be all about probability theory & random variables…. maybe histograms?\nWe could write about predicting probabiliyt an dhow it has to add to 1?"
+    "text": "This blog will be all about probability theory & random variables…. maybe histograms?\nWe could write about predicting probabiliyt an dhow it has to add to 1?\nWe will be using the Diabetes dataset from sklearn. This dataset contains 442 total samples with 10 different features: * age * sex * body mass index (BMI) * average blood pressure * total serum chloesterol * low-density lipoproteins * total cholesterol * possibly log of serum triglycerides level * blood sugar level\nThis dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)"
   },
   {
     "objectID": "about.html",

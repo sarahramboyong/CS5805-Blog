@@ -10,3 +10,18 @@ This blog will be all about probability theory & random variables.... maybe hist
 We could write about predicting probabiliyt an dhow it has to add to 1?
 
 
+We will be using the Diabetes dataset from sklearn. This dataset contains 442 total samples with 10 different features: 
+* age
+* sex
+* body mass index (BMI)
+* average blood pressure
+* total serum chloesterol
+* low-density lipoproteins
+* total cholesterol
+* possibly log of serum triglycerides level
+* blood sugar level
+
+This dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)
+
+
+

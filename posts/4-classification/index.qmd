@@ -8,9 +8,11 @@ jupyter: python3
 # Introduction 
 
 Classification is a supervised machine learning technique that attempts to predict the correct label for the given data points. There are three phases in supervised learning. 
+
 1. The model is trained on a subset of the data and is given both the input data and its labels.
 2. It is then evaluated on the testing subset.
 3. Finally, it predicts labels on new unseen data. This is called validation. 
+
 
 Machine learning classification algorithms are split into two types: eager learners and lazy learners. Eager learners build the model from the training dataset before making any predictions on future datasets. Lazy learners memorize the training data and refer to those past inputs and outputs to make predictions on future points. For these reasons, eager learners are typically perform faster than lazy learners.
 

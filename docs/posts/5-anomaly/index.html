@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -148,9 +182,167 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This is a post with executable code will be about anomaly detection</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Anomaly detection is the process of identifying suspicious or unusual occurrences within the dataset. These points are also called outliers and the can effect the performance of machine learning algorithms and skew results. In this blog we will implement one method of anomaly detection, Density-Based Spatial Clustering of Applications with Noise (DBSCAN). We will be using the Iris dataset from sklearn. This dataset contains 150 samples from 3 classes, 50 instances each. It contains the length and width of both sepals and petals.</p>
+<p>This dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html)</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the iris dataset</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> load_iris()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The data, target, and feature names are stored in the data, target, and feature_names attributes, respectively</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> iris.data</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> iris.target</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> iris.feature_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="density-based-spatial-clustering-of-applications-with-noise" class="level1">
+<h1>Density-Based Spatial Clustering of Applications with Noise</h1>
+<p>DBSCAN is an unsupervised clustering machine learning model that defines a neighborhood around each data point, looks at how many points are present within that neighborhood, and then identifies regions were the density of points is higher. Outliers are identified by being points that do not have the minimum number of points in their neighborhood. By being density-based, DBSCAN is able to identify clusters of arbitrary shapes and sizes.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize the features</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>X_std <span class="op">=</span> scaler.fit_transform(X)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DBSCAN object and fit the data</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.5</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> dbscan.fit_predict(X_std)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the cluster labels</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># -1 = outlier</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> dbscan.labels_</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of clusters</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>n_clusters <span class="op">=</span> <span class="bu">len</span>(<span class="bu">set</span>(labels)) <span class="op">-</span> (<span class="dv">1</span> <span class="cf">if</span> <span class="op">-</span><span class="dv">1</span> <span class="kw">in</span> labels <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify the outliers</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> np.where(labels <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the number of clusters</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Estimated number of clusters: </span><span class="sc">{</span>n_clusters<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the number of outliers</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of outliers:"</span>, <span class="bu">len</span>(outliers))</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data with the outliers highlighted</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>labels)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[outliers, <span class="dv">0</span>], X[outliers, <span class="dv">1</span>], c<span class="op">=</span><span class="st">"red"</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated number of clusters: 2
+Number of outliers: 34</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-3-output-2.png" width="571" height="413"></p>
+</div>
+</div>
+<p>From this plot we see that our DBSCAN model identified 2 clusters and 34 outliers. We know that this dataset contains 3 different species, so the estimated number of clusters should be 3. We can see that the first two species were, for the most part, correctly identified and the third species was listed entirely as either outliers or as past of the second species. We also see that in the first two clusters, multiple outliers were identified in the bottom right.</p>
+</section>
+<section id="performance-improvement" class="level1">
+<h1>Performance Improvement</h1>
+<p>We can improve the performance of DBSCAN by fine-tuning the <code>eps</code> and <code>min_samples</code> parameters. <code>eps</code> is the maximum distance between two samples for them to be considered in the same neighborhood. A small <code>eps</code> value means that clusters will be closer together while a larger value means that clusters will be further apart. <code>min_samples</code> is the number of points in a neighborhood for a sample to be considered a cluster.</p>
+<p>We will loop over all combinations of <code>eps</code> and <code>min_sample</code> values and attempt to find a combination that correctly identifies 3 clusters.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List of possible eps values</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>eps_values <span class="op">=</span> [<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.9</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># List of possible min_samples values</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>min_samples_values <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop over possible eps and min_samples values</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> eps <span class="kw">in</span> eps_values:</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> min_samples <span class="kw">in</span> min_samples_values:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span>eps, min_samples<span class="op">=</span>min_samples)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        clusters <span class="op">=</span> dbscan.fit_predict(X_std)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        labels <span class="op">=</span> dbscan.labels_</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        n_clusters <span class="op">=</span> <span class="bu">len</span>(<span class="bu">set</span>(labels)) <span class="op">-</span> (<span class="dv">1</span> <span class="cf">if</span> <span class="op">-</span><span class="dv">1</span> <span class="kw">in</span> labels <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        n_outliers <span class="op">=</span> <span class="bu">list</span>(labels).count(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'eps=</span><span class="sc">{</span>eps<span class="sc">}</span><span class="ss">, min_samples=</span><span class="sc">{</span>min_samples<span class="sc">}</span><span class="ss">, estimated number of clusters=</span><span class="sc">{</span>n_clusters<span class="sc">}</span><span class="ss">, number of outliers=</span><span class="sc">{</span>n_outliers<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>eps=0.3, min_samples=3, estimated number of clusters=10, number of outliers=84
+eps=0.3, min_samples=5, estimated number of clusters=3, number of outliers=120
+eps=0.3, min_samples=7, estimated number of clusters=2, number of outliers=129
+eps=0.3, min_samples=9, estimated number of clusters=1, number of outliers=141
+eps=0.5, min_samples=3, estimated number of clusters=7, number of outliers=17
+eps=0.5, min_samples=5, estimated number of clusters=2, number of outliers=34
+eps=0.5, min_samples=7, estimated number of clusters=5, number of outliers=46
+eps=0.5, min_samples=9, estimated number of clusters=4, number of outliers=68
+eps=0.7, min_samples=3, estimated number of clusters=2, number of outliers=5
+eps=0.7, min_samples=5, estimated number of clusters=2, number of outliers=6
+eps=0.7, min_samples=7, estimated number of clusters=2, number of outliers=16
+eps=0.7, min_samples=9, estimated number of clusters=2, number of outliers=20
+eps=0.9, min_samples=3, estimated number of clusters=2, number of outliers=4
+eps=0.9, min_samples=5, estimated number of clusters=2, number of outliers=4
+eps=0.9, min_samples=7, estimated number of clusters=2, number of outliers=6
+eps=0.9, min_samples=9, estimated number of clusters=2, number of outliers=7</code></pre>
+</div>
+</div>
+<p>From this list we see that the only combination that correctly identified 3 clusters was with <code>eps</code>=0.3 and <code>min_samples</code>=5. Below is the resulting plot.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DBSCAN object and fit the data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.3</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> dbscan.fit_predict(X_std)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the cluster labels</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># -1 = outlier</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> dbscan.labels_</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of clusters</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>n_clusters <span class="op">=</span> <span class="bu">len</span>(<span class="bu">set</span>(labels)) <span class="op">-</span> (<span class="dv">1</span> <span class="cf">if</span> <span class="op">-</span><span class="dv">1</span> <span class="kw">in</span> labels <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify the outliers</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> np.where(labels <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the number of clusters</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Estimated number of clusters: </span><span class="sc">{</span>n_clusters<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the number of outliers</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of outliers:"</span>, <span class="bu">len</span>(outliers))</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data with the outliers highlighted</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>labels)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[outliers, <span class="dv">0</span>], X[outliers, <span class="dv">1</span>], c<span class="op">=</span><span class="st">"red"</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"DBSCAN Outlier Detection"</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"eps=0.3, min_samples=5"</span>, y<span class="op">=</span><span class="fl">0.92</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated number of clusters: 3
+Number of outliers: 120</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-5-output-2.png" width="571" height="431"></p>
+</div>
+</div>
+<p>Even though the model correctly identified that there are 3 clusters, we can see from the plot that the clusters are not correct. The number of outliers also increased from 34 to 120.</p>
+<p>From the list we see that the model with the least number of outliers was with <code>eps</code>=0.9 and <code>min_samples</code>=3 or <code>min_samples</code>=5. Both models tied for only 4 outliers and identified 2 clusters. Below is is both plots.</p>
+<p>::: {.cell execution_count=5} ``` {.python .cell-code} #Create a figure and a set of subplots fig,axs = plt.subplots(1, 2, figsize=(10, 5))</p>
+<p>#Create a DBSCAN object for min_samples=3 and fit the data dbscan1= DBSCAN(eps=0.9, min_samples=3) clusters1= dbscan1.fit_predict(X_std)</p>
+<p>#Get the cluster labels and identify the outliers labels1= dbscan1.labels_ outliers1= np.where(labels1 == -1)[0]</p>
+<p>#Plot the data with the outliers highlighted on the first subplot axs[0].scatter(X[:,0], X[:, 1], c=labels1) axs[0].scatter(X[outliers1,0], X[outliers1, 1], c=“red”, marker=“x”) axs[0].set_title(“DBSCANOutlier Detection (min_samples=3)”)</p>
+<p>#Create a DBSCAN object for min_samples=5 and fit the data dbscan2= DBSCAN(eps=0.9, min_samples=5) clusters2= dbscan2.fit_predict(X_std)</p>
+<p>#Get the cluster labels and identify the outliers labels2= dbscan2.labels_ outliers2= np.where(labels2 == -1)[0]</p>
+<p>#Plot the data with the outliers highlighted on the second subplot axs[1].scatter(X[:,0], X[:, 1], c=labels2) axs[1].scatter(X[outliers2,0], X[outliers2, 1], c=“red”, marker=“x”) axs[1].set_title(“DBSCANOutlier Detection (min_samples=5)”)</p>
+<p>#Display the figure plt.tight_layout() plt.show() ```</p>
+<p>::: {.cell-output .cell-output-display} <img src="index_files/figure-html/cell-6-output-1.png" width="949" height="470"> ::: :::</p>
+<p>In both of these plots the model only estimated 2 clusters, however, these clusters look much closer to what we expect than in the previous plots. The number of outliers are also significantly lower than in all previous models. The outliers identified appear to belong to what should be the third cluster, and all other points from that cluster are included in the second cluster.</p>
+<p>DBSCAN is not perfect and requires tuning the hyper-parameters for best results, however, is a useful visualization method for identifying anomalies.</p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li>https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html</li>
+<li>https://pieriantraining.com/dbscan-for-outlier-detection-in-python-and-scikit-learn-machine-learning-in-python/</li>
+<li>https://www.geeksforgeeks.org/detect-and-remove-the-outliers-using-python/</li>
+<li>https://www.kdnuggets.com/2020/04/dbscan-clustering-algorithm-machine-learning.html#:~:text=low%20point%20density.-,Density%2DBased%20Spatial%20Clustering%20of%20Applications%20with%20Noise%20(DBSCAN),is%20containing%20noise%20and%20outliers.</li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

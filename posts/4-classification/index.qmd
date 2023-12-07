@@ -32,8 +32,6 @@ Before we can perform classification algorithms we will first need todo some pre
 3. Remove all stop words. Stopwords are common words like 'is', 'the', 'and', etc. that usually don't carry much information.
 
 ```{python}
-!pip install nltk
-
 import warnings
 warnings.filterwarnings('ignore')
 import nltk

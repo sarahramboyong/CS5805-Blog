@@ -60,7 +60,6 @@ print("Number of outliers:", len(outliers))
 plt.scatter(X[:, 0], X[:, 1], c=labels)
 plt.scatter(X[outliers, 0], X[outliers, 1], c="red", marker="x")
 plt.show()
-
 ```
 
 From this plot we see that our DBSCAN model identified 2 clusters and 34 outliers. We know that this dataset contains 3 different species, so the estimated number of clusters should be 3. We can see that the first two species were, for the most part, correctly identified and the third species was listed entirely as either outliers or as past of the second species. We also see that in the first two clusters, multiple outliers were identified in the bottom right. 
@@ -155,7 +154,6 @@ axs[1].scatter(X[outliers2, 0], X[outliers2, 1], c="red", marker="x")
 axs[1].set_title("DBSCAN Outlier Detection (min_samples=5)")
 
 # Display the figure
-plt.tight_layout()
 plt.show()
  ```
 

@@ -11,14 +11,21 @@
     "href": "posts/3-linear/index.html",
     "title": "Linear & Non-linear Regression",
     "section": "",
-    "text": "This is a post with executable code will be about linear / nonlinear regression"
+    "text": "Regression is a statitical method that allows on to predict the output of one variables based on the input of another. It is a way of quantifying the relationship between a dependent variable (Y) and one or more independent variables (X).\nThere are two types of regression: linear and non-linear. Linear regression uses one independent variable to predict the outcome of the dependent variable. It follows the equation: \\(y=mx+b\\) where m is the slope, or the rate of change, and b is the intercept.\nNon-linear regression is used when there is a relationship between the dependent variable and more than one indepent variables. It follows the equation:\nNon-linear regression, or multi-linear regression, accounts for the majority of real-life data which are complex and often influences b\n\n\n\nhttps://www.investopedia.com/terms/r/regression.asp#:~:text=%25%2025%25%200%25-,What%20Is%20a%20Regression%3F,(known%20as%20independent%20variables)."
+  },
+  {
+    "objectID": "posts/3-linear/index.html#referenes",
+    "href": "posts/3-linear/index.html#referenes",
+    "title": "Linear & Non-linear Regression",
+    "section": "",
+    "text": "https://www.investopedia.com/terms/r/regression.asp#:~:text=%25%2025%25%200%25-,What%20Is%20a%20Regression%3F,(known%20as%20independent%20variables)."
   },
   {
     "objectID": "posts/1-probability/index.html",
     "href": "posts/1-probability/index.html",
     "title": "Probability Theory & Random Variables",
     "section": "",
-    "text": "This blog will be all about probability theory & random variables…. maybe histograms?\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "This blog will be all about probability theory & random variables…. maybe histograms?\nWe could write about predicting probabiliyt an dhow it has to add to 1?"
   },
   {
     "objectID": "about.html",

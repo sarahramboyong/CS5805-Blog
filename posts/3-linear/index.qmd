@@ -3,6 +3,7 @@ title: "Linear & Non-linear Regression"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
 image: "linear_image.png"
+jupyter: python3
 ---
 # Introduction
 
@@ -11,11 +12,288 @@ Regression is a statitical method that allows on to predict the output of one va
 There are two types of regression: linear and non-linear. Linear regression uses one independent variable to predict the outcome of the dependent variable. It follows the equation: $y=mx+b$ where m is the slope, or the rate of change, and b is the intercept.
 
 
-Non-linear regression is used when there is a relationship between the dependent variable and more than one indepent variables. It follows the equation:
+Non-linear regression is used when there is a relationship between the dependent variable and more than one indepent variables. There are multiple types of non-linear regression, such as
+* polynomial regression
+* exponential regression
+* logarithmic regression
 
-Non-linear regression, or multi-linear regression, accounts for the majority of real-life data which are complex and often influences b
+Non-linear regression accounts for the majority of real-life data, which are complex and often influenced by multiple variables.
+
+In this blog post we will use matplotlib and sklearn to plot different types of regression. We will also explore the ability to perform prediction using regression. We will be using the Boston Housing dataset from the StatLib archive. This dataset contains 506 samples and has a known linear relationship between variables. It has 14 different features:
+* Per capita crime rate by town
+* Proportion of residential land zoned for lots over 25,000 sq.ft.
+* Proportion of non-retail business acres per town.
+* Charles River dummy variable (1 if tract bounds river; 0 otherwise)
+* Nitric oxides concentration (parts per 10 million)
+* Average number of rooms per dwelling
+* Proportion of owner-occupied units built prior to 1940
+* Weighted distances to five Boston employment centres
+* Index of accessibility to radial highways
+* Full-value property-tax rate per $10,000
+* Pupil-teacher ratio by town
+* Proportion of blacks by town
+* % lower status of the population
+* Median value of owner-occupied homes in $1000's
 
 
+```{python}
+import pandas as pd
+
+# Load the Boston housing dataset
+boston = pd.read_csv("C:/Users/sarah/git/CS5805-Blog/posts/3-linear/BostonHousing.csv")
+boston.head()
+```
+
+# Linear Regression
+
+First we need to identify which variables have a relationship with the target feature, median value of owner-occupied homes in $1000's. Todo this we can calcualte the correlation between each variable and the target feature. Correlation numbers will be between -1 and 1, with a positive correlation indicating a positive relationship, negative indicating a negative relationship, and 0 indiciating there is no relationship between variables.
+
+```{python}
+# Calculate the correlation of each variable with the target variable
+corr_with_target = boston.corr()['medv'].sort_values(ascending=False)
+
+print(corr_with_target)
+```
+
+By calculating the correlation between each variable we see that the average number of rooms per dwelling has the highest correlation coefficient with the median value of owner-occupied homes. The correlation value of 0.695 shows a positive correlation between variables.
+
+Now we will plot these variables to better visualize and understand their relationship. We will also use numpy's built-in method to fit the linear regression line.
+
+```{python}
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+
+# Create a LinearRegression object
+lr = LinearRegression()
+
+# Reshape the data to fit the model
+X = boston["rm"].values.reshape(-1,1)
+y = boston["medv"].values
+
+# Fit the model to the data
+lr.fit(X, y)
+
+# Get the coefficients and print
+m = lr.coef_
+b = lr.intercept_ 
+print(f'Coefficient: {lr.coef_}')
+print(f'Intercept: {lr.intercept_}')
+
+# Plot the relationship between RM and MEDV
+plt.scatter(X, y)
+plt.title('Relationship between RM and MEDV')
+plt.xlabel('Average number of rooms per dwelling (RM)')
+plt.ylabel('Median value of owner-occupied homes (MEDV)')
+plt.plot(boston['rm'], m*boston['rm'] + b, color='red')
+
+plt.show()
+```
+
+We can see that the regression line goes down the center of the data and appears to be a good fit. We also see that the coefficient is 9.1 and the intercept is -34.67. This means that as the average number of rooms per dwelling increase, the median value of owner-occupied homes increases by 9.1. 
+ 
+ # Predicting with Linear Regression
+
+ We can also perform predictions using linear regresion. First we will split the dataset so that we can perform predictions on the dataset. We will fit a regression line like in the previous step but only using the training set, and then we will input the testing set into our model and predict the median value of owner-occurpied homes. We will then compare that estimate to the actual value.
+
+ ```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Split the dataset into a training set and a testing set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a LinearRegression object
+lr = LinearRegression()
+
+# Fit the model using the training set
+lr.fit(X_train, y_train)
+
+# Get the coefficients and print
+m = lr.coef_
+b = lr.intercept_ 
+print(f'Coefficient: {lr.coef_}')
+print(f'Intercept: {lr.intercept_}')
+
+# Make predictions using the testing set
+y_pred = lr.predict(X_test)
+
+# Plot the relationship between RM and MEDV
+plt.scatter(X_test, y_test)
+plt.title('Relationship between RM and MEDV')
+plt.xlabel('Average number of rooms per dwelling (RM)')
+plt.ylabel('Median value of owner-occupied homes (MEDV)')
+plt.plot(X_test, y_pred, color='red')
+
+plt.show()
+
+# Calculate the metrics
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f'MSE: {mse}')
+print(f'R-squared: {r2}')
+```
+
+The regression line still appears to be a good fit. This model has a coefficient of 9.35 and an intercept of -36.25, both of which are close to the values of the first model.
+
+We can evalute this quantitativly using Mean Square Error (MSE) and R-squared values. We want as little error as possible and from this model we achieved a MSE of 46.14, which is relatively good. R-squared is a measure of how well the dependent variable is explained by the independent variable. generally a higher R-squared indicates a better fit. We achieved a R-squared of 0.37 which is relatively good. These metrics indicate that additional variables have an effect on the median value of owner-occupied homes. 
+
+# Non-Linear Regression
+
+We will attempt to approve the regression model above by instead fitting the data for a non-linear regression. We will repeat the process above but for a 2nd degree polynomial.
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+import numpy as np
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Split the dataset into a training set and a testing set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a PolynomialFeatures object for 2nd degree polynomial
+poly = PolynomialFeatures(degree=2)
+
+# Transform the x data for a quadratic fit: 
+X_poly = poly.fit_transform(X_train)
+
+# Fit the transformed features to Linear Regression
+poly_reg = LinearRegression()
+poly_reg.fit(X_poly, y_train)
+
+# Transform the test data into polynomial features
+X_test_poly = poly.transform(X_test)
+
+# Predicting on the test data
+y_pred = poly_reg.predict(X_test_poly)
+
+print(f'Coefficients: {poly_reg.coef_}')
+print(f'Intercept: {poly_reg.intercept_}')
+
+# Plot the original data
+plt.scatter(X_train, y_train, color = 'blue')
+
+# Plot the polynomial regression line
+X_line = np.linspace(min(X_train), max(X_train), 100).reshape(-1, 1)
+X_line_poly = poly.transform(X_line)
+y_line = poly_reg.predict(X_line_poly)
+plt.plot(X_line, y_line, color = 'red')
+
+plt.title('Non-linear Regression')
+plt.xlabel('Average number of rooms per dwelling (RM)')
+plt.ylabel('Median value of owner-occupied homes (MEDV)')
+plt.show()
+
+# Calculate the metrics
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f'MSE: {mse}')
+print(f'R-squared: {r2}')
+```
+
+We see that now we have 2 coefficients, -19.19 and 2.19. The intercept also changed drastically, increasing to 55.37. We can also see visually that the line better fits the data, especially on the ends. Running our evaluation metrics again we see that our MSE decreased to 35.37, and our R-squared value increased to 0.52.
+
+# Performance Improvement
+
+Finally, we will find the best dress for the polynomial regression model by looping through models with degrees 1 to 8.
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+import numpy as np
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Define the maximum degree
+max_degree = 8
+
+# Initialize the minimum MSE and the best degree
+min_mse = None
+best_degree = None
+best_r2 = None
+
+# Split the dataset into a training set and a testing set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Loop over degrees from 1 to max_degree
+for degree in range(1, max_degree+1):
+    # Create a PolynomialFeatures object for the current degree
+    poly = PolynomialFeatures(degree=degree)
+
+    # Transform the x data for a polynomial fit
+    X_poly = poly.fit_transform(X_train)
+
+    # Fit the transformed features to Linear Regression
+    poly_reg = LinearRegression()
+    poly_reg.fit(X_poly, y_train)
+
+    # Transform the test data into polynomial features
+    X_test_poly = poly.transform(X_test)
+
+    # Predict on the test data
+    y_pred = poly_reg.predict(X_test_poly)
+
+    # Calculate the MSE
+    mse = mean_squared_error(y_test, y_pred)
+
+    # Calcualte R-squared
+    r2 = r2_score(y_test, y_pred)
+
+    print(f'Degree: {degree}')
+    print(f'MSE: {mse}')
+    print(f'R2: {r2}\n')
+
+
+    # If the current MSE is smaller than the minimum MSE, update the minimum MSE and the best degree
+    if min_mse is None or mse < min_mse:
+        min_mse = mse
+        best_degree = degree
+        best_r2 = r2
+
+print(f'Best degree: {best_degree}')
+print(f'Minimum MSE: {min_mse}')
+print(f'Best R2: {best_r2}')
+```
+
+Running this loop we find that the best degree for this dataset is 5, with a MSE of 32.51 and R-squared of 0.56. Beyond degree 5 we see that we begin to over fit the model and MSE begins to increase.
+
+Below is the plot for the optimal non-linear, polynomial regression model.
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+import numpy as np
+
+# Split the dataset into a training set and a testing set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a PolynomialFeatures object for the best degree
+poly = PolynomialFeatures(degree=best_degree)
+
+# Transform the x data for a polynomial fit
+X_poly = poly.fit_transform(X_train)
+
+# Fit the transformed features to Linear Regression
+poly_reg = LinearRegression()
+poly_reg.fit(X_poly, y_train)
+
+# Plot the original data
+plt.scatter(X_train, y_train, color = 'blue')
+
+# Plot the polynomial regression line
+X_line = np.linspace(min(X_train), max(X_train), 100).reshape(-1, 1)
+X_line_poly = poly.transform(X_line)
+y_line = poly_reg.predict(X_line_poly)
+plt.plot(X_line, y_line, color = 'red')
+
+plt.title('Best Non-linear Regression Model')
+plt.xlabel('Average number of rooms per dwelling (RM)')
+plt.ylabel('Median value of owner-occupied homes (MEDV)')
+plt.show()
+```
 
 ## Referenes:
 * https://www.investopedia.com/terms/r/regression.asp#:~:text=%25%2025%25%200%25-,What%20Is%20a%20Regression%3F,(known%20as%20independent%20variables).
+* https://www.seldon.io/machine-learning-regression-explained
+* https://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html
+* https://lib.stat.cmu.edu/datasets/boston
+* https://pieriantraining.com/nonlinear-regression-in-machine-learning-python/

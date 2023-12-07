@@ -24,4 +24,8 @@ We will be using the Diabetes dataset from sklearn. This dataset contains 442 to
 This dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)
 
 
+This dataset is publically avaliable through the [StatLib archive].(https://lib.stat.cmu.edu/datasets/boston)
+
+We will also be using the Auto MPG dataset from the UCI Machine Learning Repository to explore non-linear relationships. This dataset contains 398 samples and information on vehicle mpg, number of cylinders, horsepower, weight, acceleration, model year, origin, name, and displacement. This dataset is publically avaliable on [The UCI Machine Learning Repository Website](https://archive.ics.uci.edu/dataset/9/auto+mpg).
+
 

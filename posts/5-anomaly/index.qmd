@@ -135,11 +135,6 @@ clusters1 = dbscan1.fit_predict(X_std)
 labels1 = dbscan1.labels_
 outliers1 = np.where(labels1 == -1)[0]
 
-# Plot the data with the outliers highlighted on the first subplot
-axs[0].scatter(X[:, 0], X[:, 1], c=labels1)
-axs[0].scatter(X[outliers1, 0], X[outliers1, 1], c="red", marker="x")
-axs[0].set_title("DBSCAN Outlier Detection (min_samples=3)")
-
 # Create a DBSCAN object for min_samples=5 and fit the data
 dbscan2 = DBSCAN(eps=0.9, min_samples=5)
 clusters2 = dbscan2.fit_predict(X_std)
@@ -148,12 +143,14 @@ clusters2 = dbscan2.fit_predict(X_std)
 labels2 = dbscan2.labels_
 outliers2 = np.where(labels2 == -1)[0]
 
+# Plot the data with the outliers highlighted on the first subplot
+axs[0].scatter(X[:, 0], X[:, 1], c=labels1)
+axs[0].scatter(X[outliers1, 0], X[outliers1, 1], c="red", marker="x")
+axs[0].set_title("DBSCAN Outlier Detection (min_samples=3)")
 # Plot the data with the outliers highlighted on the second subplot
 axs[1].scatter(X[:, 0], X[:, 1], c=labels2)
 axs[1].scatter(X[outliers2, 0], X[outliers2, 1], c="red", marker="x")
 axs[1].set_title("DBSCAN Outlier Detection (min_samples=5)")
-
-# Display the figure
 plt.show()
  ```
 

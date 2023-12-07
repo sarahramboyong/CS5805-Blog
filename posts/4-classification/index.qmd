@@ -15,7 +15,7 @@ Classification is a supervised machine learning technique that attempts to predi
 
 Machine learning classification algorithms are split into two types: eager learners and lazy learners. Eager learners build the model from the training dataset before making any predictions on future datasets. Lazy learners memorize the training data and refer to those past inputs and outputs to make predictions on future points. For these reasons, eager learners are typically perform faster than lazy learners.
 
-In this blog poast we will be implementing two different classification models, decision trees and K-Nearest Neighbor. Decision trees are eager learners while K-Nearest Neighbor is a lazy learning. We will be using the SMS Spam Collection dataset from the UCI Machine Learning Repository. This dataset contains 5,574 SMS messages in English, labeled ham (legitimate) or spam. This dataset is publically avaliable on [The UCI Machine Learning Repository Website](https://archive.ics.uci.edu/dataset/228/sms+spam+collection).
+In this blog post we will be implementing two different classification models, decision trees and K-Nearest Neighbor. Decision trees are eager learners while K-Nearest Neighbor is a lazy learning. We will be using the SMS Spam Collection dataset from the UCI Machine Learning Repository. This dataset contains 5,574 SMS messages in English, labeled ham (legitimate) or spam. This dataset is publically avaliable on [The UCI Machine Learning Repository Website](https://archive.ics.uci.edu/dataset/228/sms+spam+collection).
 
 ```{python}
 # Load the SMS Spam Collection dataset

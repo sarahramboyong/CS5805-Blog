@@ -327,10 +327,10 @@ Number of outliers: 120</code></pre>
 <p>#Create a DBSCAN object for min_samples=5 and fit the data dbscan2= DBSCAN(eps=0.9, min_samples=5) clusters2= dbscan2.fit_predict(X_std)</p>
 <p>#Get the cluster labels and identify the outliers labels2= dbscan2.labels_ outliers2= np.where(labels2 == -1)[0]</p>
 <p>#Plot the data with the outliers highlighted on the second subplot axs[1].scatter(X[:,0], X[:, 1], c=labels2) axs[1].scatter(X[outliers2,0], X[outliers2, 1], c=“red”, marker=“x”) axs[1].set_title(“DBSCANOutlier Detection (min_samples=5)”)</p>
-<p>#Display the figure plt.tight_layout() plt.show() ```</p>
-<p>::: {.cell-output .cell-output-display} <img src="index_files/figure-html/cell-6-output-1.png" width="949" height="470"> ::: :::</p>
+<p>#Display the figure plt.show() ```</p>
+<p>::: {.cell-output .cell-output-display} <img src="index_files/figure-html/cell-6-output-1.png" width="800" height="431"> ::: :::</p>
 <p>In both of these plots the model only estimated 2 clusters, however, these clusters look much closer to what we expect than in the previous plots. The number of outliers are also significantly lower than in all previous models. The outliers identified appear to belong to what should be the third cluster, and all other points from that cluster are included in the second cluster.</p>
-<p>DBSCAN is not perfect and requires tuning the hyper-parameters for best results, however, is a useful visualization method for identifying anomalies.</p>
+<p>DBSCAN is not perfect and requires tuning the hyper-parameters for best results, however, it is a useful visualization method for identifying anomalies.</p>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References:</h2>
 <ul>

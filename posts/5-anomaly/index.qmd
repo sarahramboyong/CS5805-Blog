@@ -2,7 +2,7 @@
 title: "Anomaly & Outlier Detection"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
-image: "image.jpg"
+image: "anomaly_image.png"
 ---
 
 This is a post with executable code will be about anomaly detection

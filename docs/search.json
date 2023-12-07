@@ -46,7 +46,7 @@
     "href": "index.html",
     "title": "CS5805: Machine Learning Blog",
     "section": "",
-    "text": "Probability Theory & Random Variables\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nLinear & Non-linear Regression\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nAnomaly & Outlier Detection\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\nNo matching items"
+    "text": "Probability Theory & Random Variables\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClustering\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nLinear & Non-linear Regression\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nClassification\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\n  \n\n\n\n\nAnomaly & Outlier Detection\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6, 2023\n\n\nSarah Ramboyong\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2-clustering/index.html",
@@ -60,13 +60,20 @@
     "href": "posts/2-clustering/index.html#references",
     "title": "Clustering",
     "section": "References:",
-    "text": "References:\n\nhttps://www.geeksforgeeks.org/clustering-in-machine-learning/\nhttps://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms\nhttps://github.com/mcnakhaee/palmerpenguins\nhttps://www.w3schools.com/python/python_ml_k-means.asp"
+    "text": "References:\n\nhttps://www.geeksforgeeks.org/clustering-in-machine-learning/\nhttps://www.datacamp.com/blog/clustering-in-machine-learning-5-essential-clustering-algorithms\nhttps://github.com/mcnakhaee/palmerpenguins\nhttps://www.w3schools.com/python/python_ml_k-means.asp\nhttps://builtin.com/data-science/elbow-method"
   },
   {
     "objectID": "posts/4-classification/index.html",
     "href": "posts/4-classification/index.html",
-    "title": "Clustering",
+    "title": "Classification",
     "section": "",
-    "text": "This is a post with executable code will be about clusting, probably knn"
+    "text": "Classification is a supervised machine learning technique that attempts to predict the correct label for the given data points. There are three phases in supervised learning. 1. The model is trained on a subset of the data and is given both the input data and its labels. 2. It is then evaluated on the testing subset. 3. Finally, it predicts labels on new unseen data. This is called validation.\nMachine learning classification algorithms are split into two types: eager learners and lazy learners. Eager learners build the model from the training dataset before making any predictions on future datasets. Lazy learners memorize the training data and refer to those past inputs and outputs to make predictions on future points. For these reasons, eager learners are typically perform faster than lazy learners.\nIn this blog poast we will be implementing two different classification models, decision trees and K-Nearest Neighbor. Decision trees are eager learners while K-Nearest Neighbor is a lazy learning. We will be using the….. dataset."
+  },
+  {
+    "objectID": "posts/4-classification/index.html#references",
+    "href": "posts/4-classification/index.html#references",
+    "title": "Classification",
+    "section": "References:",
+    "text": "References:\n\nhttps://www.datacamp.com/blog/classification-machine-learning"
   }
 ]

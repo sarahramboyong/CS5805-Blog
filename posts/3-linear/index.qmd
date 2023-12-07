@@ -2,7 +2,20 @@
 title: "Linear & Non-linear Regression"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
-image: "image.jpg"
+image: "linear_image.png"
 ---
+# Introduction
 
-This is a post with executable code will be about linear / nonlinear regression
+Regression is a statitical method that allows on to predict the output of one variables based on the input of another. It is a way of quantifying the relationship between a dependent variable (Y) and one or more independent variables (X).
+
+There are two types of regression: linear and non-linear. Linear regression uses one independent variable to predict the outcome of the dependent variable. It follows the equation: $y=mx+b$ where m is the slope, or the rate of change, and b is the intercept.
+
+
+Non-linear regression is used when there is a relationship between the dependent variable and more than one indepent variables. It follows the equation:
+
+Non-linear regression, or multi-linear regression, accounts for the majority of real-life data which are complex and often influences b
+
+
+
+## Referenes:
+* https://www.investopedia.com/terms/r/regression.asp#:~:text=%25%2025%25%200%25-,What%20Is%20a%20Regression%3F,(known%20as%20independent%20variables).

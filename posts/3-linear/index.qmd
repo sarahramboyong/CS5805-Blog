@@ -3,7 +3,6 @@ title: "Linear & Non-linear Regression"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
 image: "linear_image.png"
-jupyter: python3
 ---
 # Introduction
 

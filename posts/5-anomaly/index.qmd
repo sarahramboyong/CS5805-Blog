@@ -118,8 +118,8 @@ plt.scatter(X[outliers, 0], X[outliers, 1], c="red", marker="x")
 plt.title("DBSCAN Outlier Detection")
 plt.suptitle("eps=0.3, min_samples=5", y=0.92)
 plt.show()
-
 ```
+
  Even though the model correctly identified that there are 3 clusters, we can see from the plot that the clusters are not correct. The number of outliers also increased from 34 to 120. 
 
  From the list we see that the model with the least number of outliers was with `eps`=0.9 and `min_samples`=3 or `min_samples`=5. Both models tied for only 4 outliers and identified 2 clusters. Below is is both plots.
@@ -161,7 +161,7 @@ plt.show()
 
 In both of these plots the model only estimated 2 clusters, however, these clusters look much closer to what we expect than in the previous plots. The number of outliers are also significantly lower than in all previous models. The outliers identified appear to belong to what should be the third cluster, and all other points from that cluster are included in the second cluster.
 
-DBSCAN is not perfect and requires tuning the hyper-parameters for best results, however, is a useful visualization method for identifying anomalies.
+DBSCAN is not perfect and requires tuning the hyper-parameters for best results, however, it is a useful visualization method for identifying anomalies.
 
 ## References:
 * https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html

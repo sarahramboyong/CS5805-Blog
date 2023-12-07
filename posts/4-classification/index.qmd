@@ -3,7 +3,6 @@ title: "Classification"
 author: "Sarah Ramboyong"
 date: "2023-12-6"
 image: "classification_image.jpg"
-jupyter: python3
 ---
 # Introduction 
 

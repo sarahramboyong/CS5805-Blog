@@ -204,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the SMS Spam Collection dataset</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"C:/Users/sarah/git/CS5805-Blog/posts/4-classification/SMSSpamCollection"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, names<span class="op">=</span>[<span class="st">"label"</span>, <span class="st">"message"</span>])</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 
 
@@ -280,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]     C:\Users\sarah\AppData\Roaming\nltk_data...
 [nltk_data]   Package stopwords is already up-to-date!</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>0    go jurong point crazy available bugis n great ...
 1                              ok lar joking wif u oni
 2    free entry wkly comp win fa cup final tkts st ...
@@ -324,10 +324,10 @@ Name: message, dtype: object</code></pre>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>conf_mat <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Confusion Matrix: </span><span class="ch">\n</span><span class="sc">{</span>conf_mat<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Accuracy: 0.9704035874439462
+<pre><code>Accuracy: 0.9748878923766816
 Confusion Matrix: 
-[[953  13]
- [ 20 129]]</code></pre>
+[[957   9]
+ [ 19 130]]</code></pre>
 </div>
 </div>
 <p>We see that the accuracy of our decision tree on the Spam Collection dataset was 97.58%. Our confusion matrix shows that 956 messages were correctly labeled ham (legitimate) and 132 were correctly labeled spam. We also see that 10 messages were legitimate but labeled spam, and 17 were spam but labeled legitimate. This dataset is 86.6% legitimate messages and 13.4% spam messages, so it is expected that the model will over classify messages as legitimate.</p>
@@ -337,11 +337,11 @@ Confusion Matrix:
 <div class="cell-output cell-output-stdout">
 <pre><code>              precision    recall  f1-score   support
 
-         ham       0.98      0.99      0.98       966
-        spam       0.91      0.87      0.89       149
+         ham       0.98      0.99      0.99       966
+        spam       0.94      0.87      0.90       149
 
     accuracy                           0.97      1115
-   macro avg       0.94      0.93      0.93      1115
+   macro avg       0.96      0.93      0.94      1115
 weighted avg       0.97      0.97      0.97      1115
 </code></pre>
 </div>
@@ -364,7 +364,7 @@ weighted avg       0.97      0.97      0.97      1115
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(clf.tree_.node_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>261</code></pre>
+<pre><code>255</code></pre>
 </div>
 </div>
 <p>Using the built-in function, we see that there are 261 nodes in this decision tree. The number of branches is always # nodes - 1, so we also know that there are 260 branches in this tree.</p>

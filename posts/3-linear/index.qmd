@@ -90,11 +90,11 @@ plt.show()
 
 We can see that the regression line goes down the center of the data and appears to be a good fit. We also see that the coefficient is 9.1 and the intercept is -34.67. This means that as the average number of rooms per dwelling increase, the median value of owner-occupied homes increases by 9.1. 
  
- # Predicting with Linear Regression
+# Predicting with Linear Regression
 
  We can also perform predictions using linear regresion. First we will split the dataset so that we can perform predictions on the dataset. We will fit a regression line like in the previous step but only using the training set, and then we will input the testing set into our model and predict the median value of owner-occurpied homes. We will then compare that estimate to the actual value.
 
- ```{python}
+```{python}
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 

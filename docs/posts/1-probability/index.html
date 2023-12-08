@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -148,14 +182,271 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This blog will be all about probability theory &amp; random variables…. maybe histograms?</p>
-<p>We could write about predicting probabiliyt an dhow it has to add to 1?</p>
-<p>We will be using the Diabetes dataset from sklearn. This dataset contains 442 total samples with 10 different features: * age * sex * body mass index (BMI) * average blood pressure * total serum chloesterol * low-density lipoproteins * total cholesterol * possibly log of serum triglycerides level * blood sugar level</p>
-<p>This dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)</p>
-<p>This dataset is publically avaliable through the [StatLib archive].(https://lib.stat.cmu.edu/datasets/boston)</p>
-<p>We will also be using the Auto MPG dataset from the UCI Machine Learning Repository to explore non-linear relationships. This dataset contains 398 samples and information on vehicle mpg, number of cylinders, horsepower, weight, acceleration, model year, origin, name, and displacement. This dataset is publically avaliable on <a href="https://archive.ics.uci.edu/dataset/9/auto+mpg">The UCI Machine Learning Repository Website</a>.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Bayes’ theroem is a well-known statistical theory that determines the likelihood of an event occuring given prior events. It follows the formula: <img src="bayes_thm.jpg" class="img-fluid"></p>
+<p>This theorm was discovered by mathematician Thomas Bayes in 1763, and has since been applied to machine learning.</p>
+<p>In this blog post we will implement Naive Bayes Classifier, whcih applies Bayes’ theroem to perform classification. Naive Bayes can be implemented for different types of probability distributions, especially the most common * Multinomial * Bernoulli * Gaussian For the scope of this post we will be focusing on the Gaussian distribution. Will attempt to predict the probability of each classification label, both with built-in methods and by hand.</p>
+<p>We will be using the Wine dataset from sklearn. This dataset contains 178 samples from 3 different classes of wine. It has 14 features: * Class * Alcohol * Malicacid * Ash * Alcalinity of ash * Magnesium * Total phenols * Flavanoids * Nonflavanoid phenols * Proanthocyanins * Color intensity * Hue * 0D280_0D315_of_diluted_wines * Proline</p>
+<p>This dataset is publically avaliable through the sklearn package with <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html">documentation avaliable</a>.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the Wine dataset</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>wine_data <span class="op">=</span> load_wine()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the data and labels</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> wine_data.data</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> wine_data.target</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="guassian-naive-bayes" class="level1">
+<h1>Guassian Naive Bayes</h1>
+<p>Naive Bayes is a supervised machine learning algorithm based on Bayes’ theorm. It is used to perfrom classification. This algorithm assumes that features contribute equally and independently to the outcome.</p>
+<p>Sklearn has a built-in method to perform Guassian Naive Bayes. We can build and train the model then predict the probabilities on the test data.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> GaussianNB</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into a training set and a testing set</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GaussianNB object</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>gnb <span class="op">=</span> GaussianNB()</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model to the training data</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>gnb.fit(X_train, y_train)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities on the test data</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>y_pred_proba <span class="op">=</span> gnb.predict_proba(X_test)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_proba)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[9.99991820e-01 8.17986629e-06 1.75844851e-31]
+ [9.99999053e-01 9.46598997e-07 1.78086968e-25]
+ [1.13448660e-18 1.99953560e-03 9.98000464e-01]
+ [9.99999999e-01 7.71694277e-10 4.13905530e-37]
+ [4.85016095e-07 9.99999515e-01 1.99877483e-22]
+ [1.00000000e+00 2.47066704e-12 1.42452382e-33]
+ [7.95594246e-11 1.00000000e+00 6.55702700e-13]
+ [3.15918793e-21 4.37517039e-12 1.00000000e+00]
+ [1.94710799e-04 9.99805289e-01 5.67647705e-29]
+ [2.42169478e-15 5.33549614e-04 9.99466450e-01]
+ [9.93827013e-01 6.17298732e-03 1.83781764e-32]
+ [1.37658180e-18 3.84803880e-12 1.00000000e+00]
+ [9.86542823e-01 1.34571766e-02 3.14047577e-20]
+ [7.68155801e-16 9.82464750e-01 1.75352499e-02]
+ [1.00000000e+00 2.78016158e-13 4.69430467e-35]
+ [1.25924089e-07 9.99999874e-01 2.81153369e-15]
+ [4.42564516e-11 1.00000000e+00 4.05508262e-12]
+ [2.99568596e-12 1.00000000e+00 1.13161503e-13]
+ [1.00000000e+00 1.16206194e-11 9.87868150e-40]
+ [1.13133637e-08 9.99999989e-01 2.19397345e-19]
+ [1.00000000e+00 4.04187890e-22 6.17606318e-59]
+ [3.18591996e-01 6.81408004e-01 6.80506976e-35]
+ [2.43168670e-16 9.99826495e-01 1.73505362e-04]
+ [1.23408452e-19 2.98728031e-13 1.00000000e+00]
+ [7.10903161e-29 2.15985533e-18 1.00000000e+00]
+ [7.07192544e-24 1.17724326e-18 1.00000000e+00]
+ [4.53176013e-08 9.99999955e-01 2.35118322e-16]
+ [1.36668645e-02 9.86333136e-01 1.76260378e-16]
+ [8.04757256e-14 9.99999270e-01 7.30054928e-07]
+ [9.99999997e-01 2.70647612e-09 9.92082030e-30]
+ [9.99999305e-01 6.94947125e-07 9.14210749e-31]
+ [6.43006687e-09 9.99999994e-01 1.37380635e-16]
+ [8.16729277e-22 7.29635235e-06 9.99992704e-01]
+ [1.00000000e+00 3.47818916e-15 1.21420599e-41]
+ [1.00000000e+00 1.88697780e-10 2.34380035e-32]
+ [9.99999997e-01 2.75077349e-09 2.65193217e-46]]</code></pre>
+</div>
+</div>
+<p>This 2D array shows the probability of each test point being classified for each class. From basic probability and Bayes’ theorem we know that the probabilites of each sub-array should add up to 1. We can perform a simple check.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the sum of each sub-array</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sums <span class="op">=</span> np.<span class="bu">sum</span>(y_pred_proba, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(sums, <span class="dv">1</span>) <span class="op">==</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[ True  True  True  True  True  True  True  True  True  True  True  True
+  True  True  True  True  True  True  True  True  True  True  True  True
+  True  True  True  True  True  True  True  True  True  True  True  True]</code></pre>
+</div>
+</div>
+<p>We round to take care of any repeating decimals. For example, the first extry in the array before rounding was 1.000000000000001. The check above shows that the probabilities of each sub-array do in fact sum to 1.</p>
+</section>
+<section id="predicting-classification-probability-by-hand" class="level1">
+<h1>Predicting Classification Probability By Hand</h1>
+<p>Having a built-in fuction provided to us is very convient, however, it doesn’t allow us to fully appreciate the application of Bayes’ Theorem. We will calculate these classificaiton probabilities by hand and compare our calculations to the results of sklearn’s built-in method.</p>
+<p>First we will calculate the prior probabilities, or the proportion of instances of that class in the dataset.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the prior probabilities</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>prior_probs <span class="op">=</span> np.bincount(y_train) <span class="op">/</span> <span class="bu">len</span>(y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we will calcualte the likelihood. The likelihood is the probability of the data given the class, and we will use the Gaussian normal distribution formula:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the mean and standard deviation for each feature for each class</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> np.array([X_train[y_train <span class="op">==</span> i].mean(axis<span class="op">=</span><span class="dv">0</span>) <span class="cf">for</span> i <span class="kw">in</span> np.unique(y_train)])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>stds <span class="op">=</span> np.array([X_train[y_train <span class="op">==</span> i].std(axis<span class="op">=</span><span class="dv">0</span>) <span class="cf">for</span> i <span class="kw">in</span> np.unique(y_train)])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the likelihood</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>likelihoods <span class="op">=</span> [norm(loc<span class="op">=</span>means[i], scale<span class="op">=</span>stds[i]).pdf(X_test) <span class="cf">for</span> i <span class="kw">in</span> np.unique(y_train)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we will apply Bayes’ Theorem using the calulations performed in the previous two steps.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply Bayes' theorem</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>posterior_probs <span class="op">=</span> [prior_probs[i] <span class="op">*</span> np.prod(likelihoods[i], axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> np.unique(y_train)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we will normalize these probabilites to sum to 1.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the posterior probabilities</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>posterior_probs <span class="op">=</span> np.array(posterior_probs).T</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>posterior_probs <span class="op">=</span> posterior_probs <span class="op">/</span> posterior_probs.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(posterior_probs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[9.99991700e-01 8.29987299e-06 1.60938552e-31]
+ [9.99999054e-01 9.45532479e-07 1.65168801e-25]
+ [1.00757757e-18 1.99830633e-03 9.98001694e-01]
+ [9.99999999e-01 7.66094807e-10 3.63189055e-37]
+ [4.84902416e-07 9.99999515e-01 1.78295768e-22]
+ [1.00000000e+00 2.44562403e-12 1.28719895e-33]
+ [7.84509114e-11 1.00000000e+00 6.21497679e-13]
+ [2.90891765e-21 4.32284791e-12 1.00000000e+00]
+ [1.95571203e-04 9.99804429e-01 5.15534018e-29]
+ [2.30552490e-15 5.35092786e-04 9.99464907e-01]
+ [9.93882534e-01 6.11746635e-03 1.58918556e-32]
+ [1.28452945e-18 3.85660910e-12 1.00000000e+00]
+ [9.86553423e-01 1.34465768e-02 2.92576879e-20]
+ [7.15994008e-16 9.82564613e-01 1.74353866e-02]
+ [1.00000000e+00 2.77942746e-13 4.10380310e-35]
+ [1.25569301e-07 9.99999874e-01 2.67261512e-15]
+ [4.32542473e-11 1.00000000e+00 3.85026190e-12]
+ [2.90319319e-12 1.00000000e+00 1.02367466e-13]
+ [1.00000000e+00 1.15793759e-11 8.70345678e-40]
+ [1.10128578e-08 9.99999989e-01 2.06469733e-19]
+ [1.00000000e+00 4.02312068e-22 5.24692161e-59]
+ [3.18946528e-01 6.81053472e-01 5.85549525e-35]
+ [2.00667093e-16 9.99836216e-01 1.63783730e-04]
+ [1.18261321e-19 2.99427793e-13 1.00000000e+00]
+ [6.16841691e-29 2.13123817e-18 1.00000000e+00]
+ [6.55609746e-24 1.16259746e-18 1.00000000e+00]
+ [4.53638332e-08 9.99999955e-01 2.19344400e-16]
+ [1.35808559e-02 9.86419144e-01 1.61734314e-16]
+ [7.41663507e-14 9.99999295e-01 7.04700897e-07]
+ [9.99999997e-01 2.71500052e-09 9.15171905e-30]
+ [9.99999311e-01 6.89145891e-07 8.16290642e-31]
+ [6.30992893e-09 9.99999994e-01 1.31216900e-16]
+ [7.36198919e-22 7.25068392e-06 9.99992749e-01]
+ [1.00000000e+00 3.46489065e-15 1.08835365e-41]
+ [1.00000000e+00 1.86862919e-10 2.10177338e-32]
+ [9.99999997e-01 2.80751532e-09 2.38103607e-46]]</code></pre>
+</div>
+</div>
+<p>Now we can check our work by comparing these calculations to the output of sklearn’s built-in function.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(y_pred_proba, <span class="dv">2</span>) <span class="op">==</span> np.<span class="bu">round</span>(posterior_probs, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]
+ [ True  True  True]]</code></pre>
+</div>
+</div>
+<p>We see that our calculations match and we have successfully calculated the classificaiton probabilities.</p>
+</section>
+<section id="probability-histogram" class="level1">
+<h1>Probability Histogram</h1>
+<p>We can visualize these predicted probabilities by plotting the probability histograms.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities on the test data</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>y_pred_proba <span class="op">=</span> gnb.predict_proba(X_test)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot a histogram for each class</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(y_pred_proba.shape[<span class="dv">1</span>]):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    plt.hist(y_pred_proba[:, i], bins<span class="op">=</span><span class="dv">10</span>, label<span class="op">=</span><span class="bu">str</span>(i), alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted Probability'</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Probability Histograms'</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Class'</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>plt.xticks(np.arange(<span class="dv">0</span>, <span class="fl">1.1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-10-output-1.png" width="585" height="449"></p>
+</div>
+</div>
+<p>From this we see that Class 2 is either predicted to have a very low probability of classification or a very high probability. Class 1 is predicted to have a high probability of classiication, while Class 0 appears to be infrequent but with a high probability.</p>
+</section>
+<section id="prediction-and-evaluation" class="level1">
+<h1>Prediction and Evaluation</h1>
+<p>After performing these calulations, the Naive Bayes algorithm selects the highest posterior probability to determine which label to classify the data point as. We will now finish predicting the labels of the test data set and evaluate the model.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the labels of the test data</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> gnb.predict(X_test)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the accuracy of the model</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy: "</span>, accuracy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy:  1.0</code></pre>
+</div>
+</div>
+<p>Overall, Naive Bayes is generally considered a good algorithm that performs both fast and fairly accurate. We see that our model achieved an accuracy of 100%, and this is largely due to the features adhearing to the conditional independence assumption.</p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>https://www.britannica.com/topic/Bayess-theorem#:~:text=The%20theorem%20was%20discovered%20among,of%20a%20parameter%20under%20investigation.</li>
+<li>https://www.datacamp.com/tutorial/naive-bayes-scikit-learn</li>
+<li>https://www.ibm.com/topics/naive-bayes#:~:text=As%20a%20result%2C%20it’s%20one,the%20conditional%20independence%20assumption%20holds.</li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

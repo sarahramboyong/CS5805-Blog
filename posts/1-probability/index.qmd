@@ -4,28 +4,178 @@ author: "Sarah Ramboyong"
 date: "2023-12-6"
 image: "probability_image.png"
 ---
+# Introduction
 
-This blog will be all about probability theory & random variables.... maybe histograms?
+Bayes' theroem is a well-known statistical theory that determines the likelihood of an event occuring given prior events. It follows the formula:
+![](bayes_thm.jpg)
 
-We could write about predicting probabiliyt an dhow it has to add to 1?
+This theorm was discovered by mathematician Thomas Bayes in 1763, and has since been applied to machine learning. 
 
-
-We will be using the Diabetes dataset from sklearn. This dataset contains 442 total samples with 10 different features: 
-* age
-* sex
-* body mass index (BMI)
-* average blood pressure
-* total serum chloesterol
-* low-density lipoproteins
-* total cholesterol
-* possibly log of serum triglycerides level
-* blood sugar level
-
-This dataset is publically avaliable through the sklearn package with [documentation avaliable].(https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html)
+In this blog post we will implement Naive Bayes Classifier, whcih applies Bayes' theroem to perform classification. Naive Bayes can be implemented for different types of probability distributions, especially the most common 
+* Multinomial
+* Bernoulli
+* Gaussian
+For the scope of this post we will be focusing on the Gaussian distribution. Will attempt to predict the probability of each classification label, both with built-in methods and by hand.
 
 
-This dataset is publically avaliable through the [StatLib archive].(https://lib.stat.cmu.edu/datasets/boston)
+We will be using the Wine dataset from sklearn. This dataset contains 178 samples from 3 different classes of wine. It has 14 features:
+* Class 
+* Alcohol
+* Malicacid
+* Ash
+* Alcalinity of ash
+* Magnesium
+* Total phenols
+* Flavanoids
+* Nonflavanoid phenols
+* Proanthocyanins
+* Color intensity
+* Hue
+* 0D280_0D315_of_diluted_wines
+* Proline
 
-We will also be using the Auto MPG dataset from the UCI Machine Learning Repository to explore non-linear relationships. This dataset contains 398 samples and information on vehicle mpg, number of cylinders, horsepower, weight, acceleration, model year, origin, name, and displacement. This dataset is publically avaliable on [The UCI Machine Learning Repository Website](https://archive.ics.uci.edu/dataset/9/auto+mpg).
+This dataset is publically avaliable through the sklearn package with [documentation avaliable](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html).
 
+```{python}
+from sklearn.datasets import load_wine
+
+# Load the Wine dataset
+wine_data = load_wine()
+
+# Get the data and labels
+X = wine_data.data
+y = wine_data.target
+```
+
+# Guassian Naive Bayes
+
+Naive Bayes is a supervised machine learning algorithm based on Bayes' theorm. It is used to perfrom classification. This algorithm assumes that features contribute equally and independently to the outcome.
+
+Sklearn has a built-in method to perform Guassian Naive Bayes. We can build and train the model then predict the probabilities on the test data.
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Split the dataset into a training set and a testing set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a GaussianNB object
+gnb = GaussianNB()
+
+# Fit the model to the training data
+gnb.fit(X_train, y_train)
+
+# Predict probabilities on the test data
+y_pred_proba = gnb.predict_proba(X_test)
+
+print(y_pred_proba)
+```
+
+This 2D array shows the probability of each test point being classified for each class. From basic probability and Bayes' theorem we know that the probabilites of each sub-array should add up to 1. We can perform a simple check. 
+
+```{python}
+import numpy as np
+
+# Calculate the sum of each sub-array
+sums = np.sum(y_pred_proba, axis=1)
+
+print(np.round(sums, 1) == 1)
+```
+
+We round to take care of any repeating decimals. For example, the first extry in the array before rounding was 1.000000000000001. The check above shows that the probabilities of each sub-array do in fact sum to 1. 
+
+# Predicting Classification Probability By Hand
+
+Having a built-in fuction provided to us is very convient, however, it doesn't allow us to fully appreciate the application of Bayes' Theorem. We will calculate these classificaiton probabilities by hand and compare our calculations to the results of sklearn's built-in method. 
+
+First we will calculate the prior probabilities, or the proportion of instances of that class in the dataset.
+```{python}
+import numpy as np
+
+# Calculate the prior probabilities
+prior_probs = np.bincount(y_train) / len(y_train)
+```
+
+Now we will calcualte the likelihood. The likelihood is the probability of the data given the class, and we will use the Gaussian normal distribution formula:
+```{python}
+from scipy.stats import norm
+
+# Calculate the mean and standard deviation for each feature for each class
+means = np.array([X_train[y_train == i].mean(axis=0) for i in np.unique(y_train)])
+stds = np.array([X_train[y_train == i].std(axis=0) for i in np.unique(y_train)])
+
+# Calculate the likelihood
+likelihoods = [norm(loc=means[i], scale=stds[i]).pdf(X_test) for i in np.unique(y_train)]
+```
+
+Next we will apply Bayes' Theorem using the calulations performed in the previous two steps.
+
+```{python}
+# Apply Bayes' theorem
+posterior_probs = [prior_probs[i] * np.prod(likelihoods[i], axis=1) for i in np.unique(y_train)]
+```
+
+Finally, we will normalize these probabilites to sum to 1.
+```{python}
+# Normalize the posterior probabilities
+posterior_probs = np.array(posterior_probs).T
+posterior_probs = posterior_probs / posterior_probs.sum(axis=1, keepdims=True)
+
+print(posterior_probs)
+```
+
+Now we can check our work by comparing these calculations to the output of sklearn's built-in function.
+```{python}
+print(np.round(y_pred_proba, 2) == np.round(posterior_probs, 2))
+```
+
+We see that our calculations match and we have successfully calculated the classificaiton probabilities. 
+
+# Probability Histogram
+
+We can visualize these predicted probabilities by plotting the probability histograms. 
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Predict probabilities on the test data
+y_pred_proba = gnb.predict_proba(X_test)
+
+# Plot a histogram for each class
+for i in range(y_pred_proba.shape[1]):
+    plt.hist(y_pred_proba[:, i], bins=10, label=str(i), alpha=0.7)
+
+plt.xlabel('Predicted Probability')
+plt.ylabel('Frequency')
+plt.title('Probability Histograms')
+plt.legend(title='Class')
+plt.xticks(np.arange(0, 1.1, 0.1))
+plt.show()
+```
+
+From this we see that Class 2 is either predicted to have a very low probability of classification or a very high probability. Class 1 is predicted to have a high probability of classiication, while Class 0 appears to be infrequent but with a high probability.
+
+# Prediction and Evaluation
+
+After performing these calulations, the Naive Bayes algorithm selects the highest posterior probability to determine which label to classify the data point as. We will now finish predicting the labels of the test data set and evaluate the model.
+```{python}
+from sklearn.metrics import accuracy_score
+
+# Predict the labels of the test data
+y_pred = gnb.predict(X_test)
+
+# Calculate the accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Accuracy: ", accuracy)
+```
+
+Overall, Naive Bayes is generally considered a good algorithm that performs both fast and fairly accurate. We see that our model achieved an accuracy of 100%, and this is largely due to the features adhearing to the conditional independence assumption. 
+
+## References
+* https://www.britannica.com/topic/Bayess-theorem#:~:text=The%20theorem%20was%20discovered%20among,of%20a%20parameter%20under%20investigation.
+* https://www.datacamp.com/tutorial/naive-bayes-scikit-learn
+* https://www.ibm.com/topics/naive-bayes#:~:text=As%20a%20result%2C%20it's%20one,the%20conditional%20independence%20assumption%20holds.
 

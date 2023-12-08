@@ -320,30 +320,39 @@ Number of outliers: 120</code></pre>
 </div>
 <p>Even though the model correctly identified that there are 3 clusters, we can see from the plot that the clusters are not correct. The number of outliers also increased from 34 to 120.</p>
 <p>From the list we see that the model with the least number of outliers was with <code>eps</code>=0.9 and <code>min_samples</code>=3 or <code>min_samples</code>=5. Both models tied for only 4 outliers and identified 2 clusters. Below is is both plots.</p>
-</section>
-<section id="create-a-figure-and-a-set-of-subplots" class="level1">
-<h1>Create a figure and a set of subplots</h1>
-<p>fig, axs = plt.subplots(1, 2, figsize=(10, 5))</p>
-</section>
-<section id="create-a-dbscan-object-for-min_samples3-and-fit-the-data" class="level1">
-<h1>Create a DBSCAN object for min_samples=3 and fit the data</h1>
-<p>dbscan1 = DBSCAN(eps=0.9, min_samples=3) clusters1 = dbscan1.fit_predict(X_std)</p>
-</section>
-<section id="get-the-cluster-labels-and-identify-the-outliers" class="level1">
-<h1>Get the cluster labels and identify the outliers</h1>
-<p>labels1 = dbscan1.labels_ outliers1 = np.where(labels1 == -1)[0]</p>
-</section>
-<section id="create-a-dbscan-object-for-min_samples5-and-fit-the-data" class="level1">
-<h1>Create a DBSCAN object for min_samples=5 and fit the data</h1>
-<p>dbscan2 = DBSCAN(eps=0.9, min_samples=5) clusters2 = dbscan2.fit_predict(X_std)</p>
-</section>
-<section id="get-the-cluster-labels-and-identify-the-outliers-1" class="level1">
-<h1>Get the cluster labels and identify the outliers</h1>
-<p>labels2 = dbscan2.labels_ outliers2 = np.where(labels2 == -1)[0]</p>
-</section>
-<section id="plot-the-data-with-the-outliers-highlighted-on-the-first-subplot" class="level1">
-<h1>Plot the data with the outliers highlighted on the first subplot</h1>
-<p>axs[0].scatter(X[:, 0], X[:, 1], c=labels1) axs[0].scatter(X[outliers1, 0], X[outliers1, 1], c=“red”, marker=“x”) axs[0].set_title(“DBSCAN Outlier Detection (min_samples=3)”) # Plot the data with the outliers highlighted on the second subplot axs[1].scatter(X[:, 0], X[:, 1], c=labels2) axs[1].scatter(X[outliers2, 0], X[outliers2, 1], c=“red”, marker=“x”) axs[1].set_title(“DBSCAN Outlier Detection (min_samples=5)”) plt.show() ```</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a figure and a set of subplots</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DBSCAN object for min_samples=3 and fit the data</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>dbscan1 <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.9</span>, min_samples<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>clusters1 <span class="op">=</span> dbscan1.fit_predict(X_std)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the cluster labels and identify the outliers</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>labels1 <span class="op">=</span> dbscan1.labels_</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>outliers1 <span class="op">=</span> np.where(labels1 <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DBSCAN object for min_samples=5 and fit the data</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>dbscan2 <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.9</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>clusters2 <span class="op">=</span> dbscan2.fit_predict(X_std)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the cluster labels and identify the outliers</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>labels2 <span class="op">=</span> dbscan2.labels_</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>outliers2 <span class="op">=</span> np.where(labels2 <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data with the outliers highlighted on the first subplot</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>labels1)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].scatter(X[outliers1, <span class="dv">0</span>], X[outliers1, <span class="dv">1</span>], c<span class="op">=</span><span class="st">"red"</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">"DBSCAN Outlier Detection (min_samples=3)"</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data with the outliers highlighted on the second subplot</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>labels2)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].scatter(X[outliers2, <span class="dv">0</span>], X[outliers2, <span class="dv">1</span>], c<span class="op">=</span><span class="st">"red"</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">"DBSCAN Outlier Detection (min_samples=5)"</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-6-output-1.png" width="802" height="431"></p>
+</div>
+</div>
 <p>In both of these plots the model only estimated 2 clusters, however, these clusters look much closer to what we expect than in the previous plots. The number of outliers are also significantly lower than in all previous models. The outliers identified appear to belong to what should be the third cluster, and all other points from that cluster are included in the second cluster.</p>
 <p>DBSCAN is not perfect and requires tuning the hyper-parameters for best results, however, it is a useful visualization method for identifying anomalies.</p>
 <section id="references" class="level2">

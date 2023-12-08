@@ -152,7 +152,7 @@ axs[1].scatter(X[:, 0], X[:, 1], c=labels2)
 axs[1].scatter(X[outliers2, 0], X[outliers2, 1], c="red", marker="x")
 axs[1].set_title("DBSCAN Outlier Detection (min_samples=5)")
 plt.show()
- ```
+```
 
 In both of these plots the model only estimated 2 clusters, however, these clusters look much closer to what we expect than in the previous plots. The number of outliers are also significantly lower than in all previous models. The outliers identified appear to belong to what should be the third cluster, and all other points from that cluster are included in the second cluster.
 

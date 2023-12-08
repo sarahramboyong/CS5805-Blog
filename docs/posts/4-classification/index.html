@@ -324,10 +324,10 @@ Name: message, dtype: object</code></pre>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>conf_mat <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Confusion Matrix: </span><span class="ch">\n</span><span class="sc">{</span>conf_mat<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Accuracy: 0.9713004484304932
+<pre><code>Accuracy: 0.9730941704035875
 Confusion Matrix: 
-[[954  12]
- [ 20 129]]</code></pre>
+[[957   9]
+ [ 21 128]]</code></pre>
 </div>
 </div>
 <p>We see that the accuracy of our decision tree on the Spam Collection dataset was 97.58%. Our confusion matrix shows that 956 messages were correctly labeled ham (legitimate) and 132 were correctly labeled spam. We also see that 10 messages were legitimate but labeled spam, and 17 were spam but labeled legitimate. This dataset is 86.6% legitimate messages and 13.4% spam messages, so it is expected that the model will over classify messages as legitimate.</p>
@@ -338,10 +338,10 @@ Confusion Matrix:
 <pre><code>              precision    recall  f1-score   support
 
          ham       0.98      0.99      0.98       966
-        spam       0.91      0.87      0.89       149
+        spam       0.93      0.86      0.90       149
 
     accuracy                           0.97      1115
-   macro avg       0.95      0.93      0.94      1115
+   macro avg       0.96      0.92      0.94      1115
 weighted avg       0.97      0.97      0.97      1115
 </code></pre>
 </div>
@@ -364,7 +364,7 @@ weighted avg       0.97      0.97      0.97      1115
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(clf.tree_.node_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>259</code></pre>
+<pre><code>255</code></pre>
 </div>
 </div>
 <p>Using the built-in function, we see that there are 261 nodes in this decision tree. The number of branches is always # nodes - 1, so we also know that there are 260 branches in this tree.</p>
